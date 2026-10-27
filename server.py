@@ -169,11 +169,13 @@ class Handler(SimpleHTTPRequestHandler):
             return json_response(self, {"ok": False, "message": "Server error: " + str(exc)}, 500)
 
 if __name__ == "__main__":
-    server = ThreadingHTTPServer(("127.0.0.1", 8000), Handler)
-    print("\\nFood Verse AI is running at http://127.0.0.1:8000")
-    print("Press Ctrl+C to stop the server.\\n")
+    port = int(os.environ.get("PORT", 8000))
+    server = ThreadingHTTPServer(("0.0.0.0", port), Handler)
+
+    print(f"Food Verse AI is running on port {port}")
+
     try:
         server.serve_forever()
     except KeyboardInterrupt:
-        print("\\nServer stopped.")
+        print("\nServer stopped.")
         server.server_close()
